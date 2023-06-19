@@ -29,6 +29,4 @@ class DeviceModel {
       isConnected: true,
     );
   }
-
-  static fromScanResult(ScanResult result) {}
 }

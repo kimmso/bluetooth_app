@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_app/src/baseball_count_app.dart';
 import 'package:flutter_bluetooth_app/src/controller/bluetooth_controller.dart';
 import 'package:get/get.dart';
 
@@ -9,14 +10,17 @@ class App extends GetView<BluetoothController> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: controller.scan,
-        child: Icon(Icons.search),
+        onPressed: () {
+          print('스캔!');
+          controller.scan();
+        },
+        child: const Icon(Icons.search),
       ),
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text("202316711 김소연"),
-        titleTextStyle: TextStyle(color: Colors.black, fontSize: 24),
+        title: const Text("202316711 김소연"),
+        titleTextStyle: const TextStyle(color: Colors.black, fontSize: 24),
         elevation: 0.0,
       ),
       body: Obx(
@@ -25,7 +29,12 @@ class App extends GetView<BluetoothController> {
             itemBuilder: (_, index) {
               final device = controller.devices[index];
               return ListTile(
-                title: Text(device.name),
+                onTap: () {
+                  device.device!.connect();
+                  print('연결');
+                  Get.to(() => BaseballCount(deviceModel: device));
+                },
+                title: Text((device.name == '') ? 'N/A' : device.name),
               );
             }),
       ),
